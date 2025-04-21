@@ -1,3 +1,6 @@
 [submodule "libs/Slab"]
 	path = libs/Slab
 	url = https://github.com/flamendless/Slab
+[submodule "libs/lume"]
+	path = libs/lume
+	url = https://github.com/rxi/lume.git

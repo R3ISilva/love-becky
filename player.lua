@@ -1,4 +1,4 @@
-local function createPlayer(x, y)
+local function createPlayer(x, y, id)
 	local self = {
 		x = x,
 		y = y,
@@ -6,9 +6,13 @@ local function createPlayer(x, y)
 		sizeY = 40,
 		speed = 200,
 		hand = HandState.empty,
+		id = id,
 	}
 
-	function self:handleMovement(dt)
+	function self:handleMovement(dt, Collidables)
+		local oldX, oldY = self.x, self.y
+
+		-- Movement input
 		if love.keyboard.isDown("right") then
 			self.x = self.x + self.speed * dt
 		elseif love.keyboard.isDown("left") then
@@ -20,6 +24,11 @@ local function createPlayer(x, y)
 		elseif love.keyboard.isDown("up") then
 			self.y = self.y - self.speed * dt
 		end
+
+		return {
+			oldX = oldX,
+			oldY = oldY,
+		}
 	end
 
 	function self:draw()
