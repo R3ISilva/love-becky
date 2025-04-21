@@ -1,6 +1,9 @@
 local createPlayer = require("player")
 local createInteractable = require("Interactable")
 
+---@module "libs.Slab.API"
+local Slab = require("libs.Slab.Slab")
+
 Player1 = createPlayer(100, 100)
 Collidables = {
 	createInteractable(50, 50, 40, 40),
@@ -10,21 +13,25 @@ Collidables = {
 function love.load()
 	-- Background color (set once)
 	love.graphics.setBackgroundColor(0.1, 0.1, 0.15) -- dark blue/gray
+	Slab.Initialize()
 end
 
 function love.update(dt)
 	Player1:handleMovement(dt)
+	Slab.Update(dt)
+	Slab.BeginWindow("Debug Window", { Title = "Debug Title Window" })
+	for _, obj in ipairs(Collidables) do
+		if CheckCollision(Player1, obj) then
+			Slab.Text("collission")
+		end
+	end
 
-	-- print("Hello, console!")
-	-- for _, obj in ipairs(Collidables) do
-	-- 	if CheckCollision(Player1, obj) then
-	-- 		print("Hello, console!")
-	-- 	end
-	-- end
+	Slab.EndWindow()
 end
 
 function love.draw()
 	Player1:draw()
+	Slab.Draw()
 
 	for _, obj in ipairs(Collidables) do
 		obj:draw()
