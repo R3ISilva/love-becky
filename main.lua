@@ -6,9 +6,21 @@ local Slab = require("libs.Slab.Slab")
 
 Player1 = createPlayer(100, 100, 1)
 Collidables = {
-	createInteractable(50, 50, 40, 40),
-	createInteractable(150, 150, 40, 40),
+	createInteractable(50, 50, 40, 40, Types.testSet),
+	createInteractable(150, 150, 40, 40, Types.testGet),
 }
+
+local function handleInteractions()
+	if Player1:IsTryingToInteract() then
+		for _, obj in ipairs(Collidables) do
+			if CheckInteractArea(Player1, obj) then
+				local interactAction = obj:interact(Player1)
+				Player1:handleInteract(interactAction)
+				return
+			end
+		end
+	end
+end
 
 function love.load()
 	-- Background color (set once)
@@ -20,7 +32,7 @@ function love.update(dt)
 	Slab.Update(dt)
 	Slab.BeginWindow("Debug Window", { Title = "Debug Title Window" })
 
-	local oldPosition = Player1:handleMovement(dt, Collidables)
+	local oldPosition = Player1:handleMovement(dt)
 
 	for _, obj in ipairs(Collidables) do
 		if CheckCollision(Player1, obj) then
@@ -28,13 +40,9 @@ function love.update(dt)
 		end
 	end
 
-	if Player1:IsTryingToInteract() then
-		for _, obj in ipairs(Collidables) do
-			if CheckInteractArea(Player1, obj) then
-				Slab.Text("interact")
-			end
-		end
-	end
+	handleInteractions()
+
+	Slab.Text(tostring(Player1.hand))
 
 	Slab.EndWindow()
 end
