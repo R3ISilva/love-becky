@@ -31,6 +31,13 @@ local function createPlayer(x, y, id)
 		}
 	end
 
+	function self:IsTryingToInteract()
+		if love.keyboard.isDown("e") then
+			return true
+		end
+		return false
+	end
+
 	function self:draw()
 		-- Draw the self as a red rectangle
 		love.graphics.setColor(1, 0.2, 0.2) -- red

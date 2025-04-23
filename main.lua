@@ -25,8 +25,14 @@ function love.update(dt)
 	for _, obj in ipairs(Collidables) do
 		if CheckCollision(Player1, obj) then
 			Player1.x, Player1.y = oldPosition.oldX, oldPosition.oldY
-			obj:setAbleToInteract(Player1.id)
-			Slab.Text(tostring(obj.ableToInteractPlayers[1]))
+		end
+	end
+
+	if Player1:IsTryingToInteract() then
+		for _, obj in ipairs(Collidables) do
+			if CheckInteractArea(Player1, obj) then
+				Slab.Text("interact")
+			end
 		end
 	end
 
